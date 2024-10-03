@@ -1,0 +1,53 @@
+---
+import TextInput from "../components/TextInput.astro";
+import TextArea from "../components/TextArea.astro";
+import Button from "../components/Button.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contact">
+  <div class="flex flex-col">
+    <div class="pb-4">
+      <h1 class="text-2xl">Contact</h1>
+    </div>
+
+    <form>
+      <div class="flex flex-row gap-6 pb-4">
+        <div class="flex-1">
+          <TextInput
+            label="First Name"
+            id="firstName"
+            name="firstName"
+            type="text"
+            required
+          />
+        </div>
+        <div class="flex-1">
+          <TextInput
+            label="Last Name"
+            id="lastName"
+            name="lastName"
+            type="text"
+            required
+          />
+        </div>
+      </div>
+      <div class="pb-4">
+        <TextInput
+          label="Email Address"
+          id="email"
+          name="email"
+          type="email"
+          required
+        />
+      </div>
+      <div class="pb-4">
+        <TextArea label="Message" id="message" name="message" required />
+      </div>
+      <div class="flex justify-end gap-6">
+        <Button label="Submit" type="submit" />
+        <Button label="Reset" type="reset" />
+      </div>
+    </form>
+  </div>
+</BaseLayout>

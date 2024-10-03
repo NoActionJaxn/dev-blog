@@ -1,0 +1,15 @@
+---
+interface Button {
+  full?: boolean;
+  label: string;
+  type: "button" | "submit" | "reset";
+}
+
+const { full, label, type } = Astro.props;
+---
+
+<button
+  type={type}
+  class={`bg-neutral-400 hover:bg-neutral-500 text-lg inline-flex items-center justify-center px-4 h-12 min-w-48${full ? " w-full" : ""}`}
+  >{label}</button
+>

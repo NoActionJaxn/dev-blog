@@ -1,0 +1,28 @@
+---
+interface TextInput {
+  id: string;
+  label: string;
+  name: string;
+  type: "text" | "email" | "password";
+  required?: boolean;
+}
+
+const { id, label, name, type, required } = Astro.props;
+---
+
+<label for={id} class="inline-flex flex-col w-full">
+  <span class="text-lg"
+    >{label}{required && <span class="text-red-600">*</span>}</span
+  >
+  <div
+    class="bg-neutral-200 focus-within:bg-neutral-100 focus-within:outline focus-within:outline-4 focus-within:outline-blue-300 border border-neutral-600 h-12"
+  >
+    <input
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      class="border-none outline-none bg-transparent py-0 px-2 m-0 w-full h-full"
+    />
+  </div>
+</label>
