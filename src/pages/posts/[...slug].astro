@@ -1,8 +1,69 @@
 ---
+import RichTextRenderer from "@caisy/rich-text-astro-renderer";
+import { gql } from "graphql-request";
+import { format } from "date-fns";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { client } from "../../services/graphql";
+import type { GetPost } from "../../types/posts";
 
+const params = Astro.params;
+
+const gqlResponse: GetPost = await client.request(
+  gql`
+    query getPost($slug: String) {
+      allPost(where: { slug: { eq: $slug } }) {
+        edges {
+          node {
+            _meta {
+              publishedAt
+              firstPublishedAt
+            }
+            title
+            tagline
+            body {
+              json
+            }
+            tags
+            slug
+            id
+          }
+        }
+      }
+    }
+  `,
+  { slug: params.slug },
+);
+
+const post = gqlResponse?.allPost?.edges?.[0];
+
+const firstPublishedAt = post?.node?._meta?.firstPublishedAt
+  ? format(post?.node?._meta?.firstPublishedAt, "MMMM, d yyyy")
+  : "";
 ---
 
-<div>
-  <h1 class="text-xl">Title</h1>
-  <p>Body</p>
-</div>
+<BaseLayout title={post?.node?.title ?? ""}>
+  <div class="flex flex-col gap-2">
+    <div class="flex flex-row items-baseline justify-between">
+      <h1 class="text-2xl font-semibold">{post?.node?.title}</h1>
+
+      <span class="text-sm">
+        {firstPublishedAt}
+      </span>
+    </div>
+    <div>
+      <h4 class="text-lg font-bold">{post?.node?.tagline}</h4>
+    </div>
+    <div>
+      <RichTextRenderer node={post?.node?.body?.json} />
+    </div>
+    <div class="flex flex-row gap-2 pt-2">
+      {
+        post?.node?.tags?.map((_) => (
+          <div class="inline-flex border border-neutral-700 h-min px-2 py-1.5">
+            <span class="text-xs leading-none">tag</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

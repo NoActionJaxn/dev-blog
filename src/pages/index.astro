@@ -1,7 +1,69 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
+import { gql } from "graphql-request";
+import RichTextRenderer from "@caisy/rich-text-astro-renderer";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { client } from "../services/graphql";
+import type { GetPost } from "../types/posts";
+
+const gqlResponse: GetPost = await client.request(gql`
+	query getAllPosts {
+		allPost(sort: { publishedAt: DESC }, first: 2) {
+			edges {
+				node {
+					_meta {
+						publishedAt
+					}
+					title
+					tagline
+					body {
+						json
+					}
+					tags
+					slug
+					id
+				}
+			}
+		}
+	}
+`);
+
+const posts = gqlResponse?.allPost?.edges;
 ---
 
 <BaseLayout title="Home">
-		<h1 class="text-xl">Home</h1>
+	<div class="flex flex-col gap-8">
+		<div class="flex items-center justify-center h-80 bg-neutral-400">
+			Banner
+		</div>
+		<div class="grid grid-cols-2 gap-x-4 gap-y-8">
+			{
+				posts?.map(({ node }) => (
+					<div class="flex flex-col border border-neutral-700 p-4 gap-2">
+						<div>
+							<h2 class="text-lg font-semibold">{node?.title}</h2>
+						</div>
+						<div>
+							<h4 class="text-base font-bold">{node?.tagline}</h4>
+						</div>
+						<div>
+							<RichTextRenderer node={node?.body?.json} />
+						</div>
+						<div class="flex flex-row gap-2 pt-2">
+							{node?.tags?.map((_) => (
+								<div class="inline-flex border border-neutral-700 h-min px-2 py-1.5">
+									<span class="text-xs leading-none">tag</span>
+								</div>
+							))}
+						</div>
+						<div class="text-right pt-4">
+							<a class="text-blue-500" href={`/posts/${node?.slug}`}>
+								<span class="text-sm underline-offset-2">Read More</span>{" "}
+								<i class="fa-solid fa-chevron-right text-[0.6rem]" />
+							</a>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
 </BaseLayout>
