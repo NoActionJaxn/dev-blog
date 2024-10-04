@@ -1,15 +1,15 @@
-<div class="flex flex-row justify-between items-center h-16 px-8">
-  <div>
-    <a href=".">NOACTIONJAXN</a>
+---
+import Logo from "./Logo.astro";
+import PageNavigation from "./PageNavigation.astro";
+import SocialNetworks from "./SocialNetworks.astro";
+import { PAGES } from "../constants/pages";
+import { SOCIAL_NETWORKS } from "../constants/socialNetworks";
+---
+
+<div class="flex flex-col pt-24 pb-12 gap-6">
+  <div class="flex flex-row justify-between items-center gap-4">
+    <Logo />
+    <SocialNetworks networks={SOCIAL_NETWORKS} />
   </div>
-  <div>
-    <ul class="inline-flex gap-2">
-      <li>
-        <a href="/posts">Posts</a>
-      </li>
-      <li>
-        <a href="/about">About</a>
-      </li>
-    </ul>
-  </div>
+  <PageNavigation pages={PAGES} />
 </div>

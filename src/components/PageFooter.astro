@@ -1,31 +1,19 @@
-<div class="flex flex-row justify-between items-center px-8 h-12">
+---
+import { format } from "date-fns";
+
+const year = format(new Date(), "yyyy");
+
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+---
+
+<div class="flex flex-row justify-between items-center py-8 h-12">
   <div>
-    <span class="text-sm">Jackson Hermitt</span>
+    <span class="text-sm font-oswald uppercase">NoActionJaxn {year}</span>
   </div>
 
   <div>
-    <ul class="inline-flex flex-row gap-2">
-      <li>
-        <a href="linkedin.com">
-          <i class="fa-brands fa-linkedin">
-            <span class="sr-only">LinkedIn</span>
-          </i>
-        </a>
-      </li>
-      <li>
-        <a href="github.com">
-          <i class="fa-brands fa-github">
-            <span class="sr-only">Github</span>
-          </i>
-        </a>
-      </li>
-      <li>
-        <a href="youtube.com">
-          <i class="fa-brands fa-square-youtube">
-            <span class="sr-only">Youtube</span>
-          </i>
-        </a>
-      </li>
-    </ul>
+    <a class="text-sm font-oswald uppercase" href="#" onclick="scrollToTop()">Back to Top</a>
   </div>
 </div>

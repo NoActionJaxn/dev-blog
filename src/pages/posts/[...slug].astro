@@ -56,7 +56,6 @@ const { title, tagline, tags, body, publishedAt } = Astro.props as Props;
   <div class="flex flex-col gap-2">
     <div class="flex flex-row items-baseline justify-between">
       <h1 class="text-2xl font-semibold">{title}</h1>
-
       {
         publishedAt && (
           <span class="text-sm">{format(publishedAt, "MMMM, d yyyy")}</span>
