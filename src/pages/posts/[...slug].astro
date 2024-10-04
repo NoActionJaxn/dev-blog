@@ -1,4 +1,5 @@
 ---
+import type { InferGetStaticPropsType } from "astro";
 import RichTextRenderer from "@caisy/rich-text-astro-renderer";
 import { gql } from "graphql-request";
 import { format } from "date-fns";
@@ -6,12 +7,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { client } from "../../services/graphql";
 import type { GetPost } from "../../types/posts";
 
-const params = Astro.params;
-
-const gqlResponse: GetPost = await client.request(
-  gql`
-    query getPost($slug: String) {
-      allPost(where: { slug: { eq: $slug } }) {
+export const getStaticPaths = async () => {
+  const gqlResponse: GetPost = await client.request(gql`
+    query getPost {
+      allPost {
         edges {
           node {
             _meta {
@@ -30,35 +29,49 @@ const gqlResponse: GetPost = await client.request(
         }
       }
     }
-  `,
-  { slug: params.slug },
-);
+  `);
 
-const post = gqlResponse?.allPost?.edges?.[0];
+  const posts = gqlResponse?.allPost?.edges;
 
-const firstPublishedAt = post?.node?._meta?.firstPublishedAt
-  ? format(post?.node?._meta?.firstPublishedAt, "MMMM, d yyyy")
-  : "";
+  return posts?.map((post) => {
+    return {
+      params: { slug: post.node?.slug },
+      props: {
+        title: post.node?.title,
+        tagline: post.node?.tagline,
+        tags: post.node?.tags,
+        body: post.node?.body?.json,
+        publishedAt: post.node?._meta.publishedAt,
+      },
+    };
+  });
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { title, tagline, tags, body, publishedAt } = Astro.props as Props;
 ---
 
-<BaseLayout title={post?.node?.title ?? ""}>
+<BaseLayout title={title ?? ""}>
   <div class="flex flex-col gap-2">
     <div class="flex flex-row items-baseline justify-between">
-      <h1 class="text-2xl font-semibold">{post?.node?.title}</h1>
+      <h1 class="text-2xl font-semibold">{title}</h1>
 
-      <span class="text-sm">
-        {firstPublishedAt}
-      </span>
+      {
+        publishedAt && (
+          <span class="text-sm">{format(publishedAt, "MMMM, d yyyy")}</span>
+        )
+      }
     </div>
     <div>
-      <h4 class="text-lg font-bold">{post?.node?.tagline}</h4>
+      <h4 class="text-lg font-bold">{tagline}</h4>
     </div>
     <div>
-      <RichTextRenderer node={post?.node?.body?.json} />
+      <RichTextRenderer node={body} />
     </div>
     <div class="flex flex-row gap-2 pt-2">
       {
-        post?.node?.tags?.map((_) => (
+        tags?.map((_) => (
           <div class="inline-flex border border-neutral-700 h-min px-2 py-1.5">
             <span class="text-xs leading-none">tag</span>
           </div>
