@@ -33,14 +33,12 @@ const { title } = Astro.props;
     <title>NOACTIONJAXN{title && ` - ${title}`}</title>
   </head>
   <body>
-    <div class="flex flex-col items-center w-screen min-h-screen h-full bg-slate-200">
-      <div class="flex flex-col h-full max-w-screen-2xl px-8">
-        <PageHeader />
-        <div class="flex-grow">
-          <slot />
-        </div>
-        <PageFooter />
+    <div class="grid grid-rows-layout w-screen min-h-full bg-slate-200">
+      <PageHeader />
+      <div class="px-12 pb-16">
+        <slot />
       </div>
+      <PageFooter />
     </div>
   </body>
 </html>

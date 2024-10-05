@@ -1,0 +1,12 @@
+---
+import RichTextRenderer from "@caisy/rich-text-astro-renderer";
+import type { JSONBody } from "../types/caisy";
+
+interface Props {
+  json?: JSONBody;
+}
+
+const { json } = Astro.props;
+---
+
+<RichTextRenderer node={json} />

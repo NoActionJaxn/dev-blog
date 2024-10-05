@@ -11,14 +11,14 @@ const { pages } = Astro.props;
 ---
 
 <div>
-  <ul class="inline-flex gap-2 text-lg font-oswald uppercase">
+  <ul class="inline-flex gap-2 text-xl font-oswald uppercase">
     {
       pages.map(({ href, label }) => (
         <li>
           <a
             href={href}
             class={
-              "p-2 rounded-md text-slate-900 bg-transparent hover:text-slate-200 hover:bg-slate-800" +
+              "p-2 rounded-md text-slate-800 bg-transparent hover:text-slate-200 hover:bg-slate-800" +
               (pathname === href ? " !bg-slate-800 !text-slate-200" : "")
             }
           >

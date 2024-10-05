@@ -9,5 +9,16 @@ export interface CaisyDocument_Meta {
 }
 
 export interface ConnectionEdge<T> {
-    node?: T,
+  node?: T,
+}
+
+export interface JSONBody {
+  content: {
+    attrs: unknown,
+    content: {
+      text: string,
+      type: string,
+    }[],
+  }[],
+  type: string,
 }

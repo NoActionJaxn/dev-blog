@@ -2,18 +2,27 @@
 import { format } from "date-fns";
 
 const year = format(new Date(), "yyyy");
-
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
 ---
 
-<div class="flex flex-row justify-between items-center py-8 h-12">
+<div
+  class="flex flex-row justify-between items-center py-8 px-12 h-12 bg-slate-300 text-slate-800"
+>
+  <script>
+    const el = document.getElementById("back-to-top");
+
+    el?.addEventListener("click", (_) => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
   <div>
     <span class="text-sm font-oswald uppercase">NoActionJaxn {year}</span>
   </div>
 
   <div>
-    <a class="text-sm font-oswald uppercase" href="#" onclick="scrollToTop()">Back to Top</a>
+    <a class="text-sm font-oswald uppercase" href="#" id="back-to-top">
+      <span>Back to Top</span>
+      <i class="fa-solid fa-chevron-up text-xs pl-2"></i>
+    </a>
   </div>
 </div>

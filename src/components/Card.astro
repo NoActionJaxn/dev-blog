@@ -1,0 +1,57 @@
+---
+import { format } from "date-fns";
+import type { JSONBody } from "../types/caisy";
+import Tag from "./Tag.astro";
+
+interface Props {
+  href?: string;
+  title?: string;
+  tagline?: string;
+  tags?: string[];
+  body?: {
+    json?: JSONBody;
+  };
+  publishedAt?: Date;
+}
+
+const { href, title, tagline, tags, body, publishedAt = "" } = Astro.props;
+
+let preview = "";
+
+body?.json?.content?.forEach(({ content }) => {
+  if (preview.length < 200) {
+    preview += content?.[0].text + " ";
+  }
+});
+---
+
+<div class="flex flex-col rounded-md bg-slate-800 overflow-hidden">
+  <div class="p-8">
+    <span class="box-border flex flex-row gap-2 justify-between items-start">
+      <h2
+        class="font-oswald font-semibold tracking-wide text-slate-200 text-4xl line-clamp-1"
+      >
+        {title}
+      </h2>
+      <span class="text-slate-200 text-sm text-right pt-1">
+        {format(publishedAt, "MMMM, d yyyy")}
+      </span>
+    </span>
+    <h4 class="font-sans font-bold uppercase text-slate-400 pt-8">{tagline}</h4>
+    <div class="text-slate-200 pt-2">
+      <p class="line-clamp-[10]">{preview}</p>
+    </div>
+    <div class="flex flex-row flex-wrap pt-8 gap-2.5">
+      {
+        tags?.map((tag) => (
+          <Tag>{tag}</Tag>
+        ))
+      }
+    </div>
+  </div>
+  <a
+    href={href}
+    class="box-border py-4 w-full border-t border-slate-200 text-slate-200 text-center text-lg font-oswald uppercase hover:bg-slate-600"
+    >Read More</a
+  >
+</div>

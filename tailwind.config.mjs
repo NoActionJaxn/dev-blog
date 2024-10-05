@@ -7,6 +7,9 @@ export default {
 				'sans': 'montserrat, "sans-serif"',
 				'oswald': 'oswald, "sans-serif"',
 			},
+			gridTemplateRows: {
+				layout: 'auto 1fr auto',
+			},
 		},
 	},
 	plugins: [],

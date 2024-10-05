@@ -1,37 +1,12 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
 import RichTextRenderer from "@caisy/rich-text-astro-renderer";
-import { gql } from "graphql-request";
 import { format } from "date-fns";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { client } from "../../services/graphql";
-import type { GetPost } from "../../types/posts";
+import { getPosts } from "../../services/graphql";
 
 export const getStaticPaths = async () => {
-  const gqlResponse: GetPost = await client.request(gql`
-    query getPost {
-      allPost {
-        edges {
-          node {
-            _meta {
-              publishedAt
-              firstPublishedAt
-            }
-            title
-            tagline
-            body {
-              json
-            }
-            tags
-            slug
-            id
-          }
-        }
-      }
-    }
-  `);
-
-  const posts = gqlResponse?.allPost?.edges;
+  const posts = getPosts?.allPost?.edges;
 
   return posts?.map((post) => {
     return {

@@ -1,4 +1,4 @@
-import type { CaisyDocument_Meta, ConnectionEdge } from "./caisy"
+import type { CaisyDocument_Meta, ConnectionEdge, JSONBody } from "./caisy"
 
 export interface GetPost {
   allPost: {
@@ -12,16 +12,7 @@ export interface Post {
   title: string,
   tagline?: string,
   body?: {
-    json?: {
-      content: {
-        attrs: unknown,
-        content: {
-          text: string,
-          type: string,
-        }[],
-      }[],
-      type: string,
-    },
+    json?: JSONBody,
   },
   tags?: string[],
   slug: string,
