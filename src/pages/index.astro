@@ -1,36 +1,80 @@
 ---
+import { gql } from "graphql-request";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Card from "../components/Card.astro";
-import { getRecentPosts } from "../services/graphql";
+import SmallHeader from "../components/Typography/SmallHeader.astro";
+import LargeHeader from "../components/Typography/LargeHeader.astro";
+import { client } from "../services/graphql";
+import type { GetPostTags } from "../types/posts";
+import type { ShortBio } from "../types/shortBio";
+import Description from "../components/Typography/Description.astro";
+import Avatar from "../components/Assets/Avatar.astro";
 
-const posts = getRecentPosts?.allPost?.edges;
+export const getShortBio: ShortBio = await client.request(gql`
+	query getShortBio {
+		ShortBio {
+			description
+			id
+			intro
+			name
+			avatar {
+				description
+				src
+				width
+				author
+				title
+				height
+			}
+		}
+	}
+`);
+
+export const getPostTags: GetPostTags = await client.request(gql`
+	query getPostTags {
+		allPost {
+			edges {
+				node {
+					tags {
+						... on CustomTag {
+							id
+							tag
+						}
+					}
+				}
+			}
+		}
+	}
+`);
+
+const shortBio = getShortBio?.ShortBio;
+
+const posts = getPostTags?.allPost?.edges;
+
+const tags = posts?.map(({ node }) => node?.tags).flat();
+
+const tagRanking: { [k: string]: number } = {};
+
+tags?.forEach((tag) => {
+	if (tag) {
+		const cur = tagRanking[tag.tag] ?? 0;
+
+		tagRanking[tag.tag] = cur + 1;
+	}
+});
 ---
 
-<BaseLayout title="Home">
-	<div class="flex flex-col">
-		<div class="flex items-center justify-center h-80 bg-neutral-400">
-			Banner
+<BaseLayout>
+	<div class="flex lg:flex-row flex-col items-center lg:gap-24 gap-16">
+		<div class="flex flex-row items-center justify-center max-w-sm lg:min-w-96">
+			<Avatar src={shortBio?.avatar?.src} alt={shortBio?.avatar?.description} classlist="" />
 		</div>
-		<div>
-			<div class="pt-16 px-2">
-				<h2 class="text-xl uppercase font-oswald font-semibold">
-					Recent Posts
-				</h2>
-			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
-				{
-					posts?.map(({ node }) => (
-						<Card
-							title={node?.title}
-							tagline={node?.tagline}
-							href={`/posts/${node?.slug}`}
-							tags={node?.tags}
-							body={node?.body}
-							publishedAt={node?._meta.publishedAt}
-						/>
-					))
-				}
-			</div>
+		<div class="flex flex-col items-start pb-4">
+			<SmallHeader>{shortBio?.intro}</SmallHeader>
+			<LargeHeader>{shortBio?.name}</LargeHeader>
+
+			<Description classlist="pt-6">{shortBio?.description}</Description>
 		</div>
+	</div>
+	<div class="pt-24">
+		<SmallHeader>What I'm up to</SmallHeader>
 	</div>
 </BaseLayout>

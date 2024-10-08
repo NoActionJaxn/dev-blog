@@ -1,5 +1,5 @@
 ---
-import type { Page } from "../types/page";
+import type { Page } from "../../types/page";
 
 interface Props {
   pages: Page[];
@@ -11,15 +11,15 @@ const { pages } = Astro.props;
 ---
 
 <div>
-  <ul class="inline-flex gap-2 text-xl font-oswald uppercase">
+  <ul class="inline-flex gap-4 text-xl font-oswald uppercase">
     {
       pages.map(({ href, label }) => (
         <li>
           <a
             href={href}
             class={
-              "p-2 rounded-md text-slate-800 bg-transparent hover:text-slate-200 hover:bg-slate-800" +
-              (pathname === href ? " !bg-slate-800 !text-slate-200" : "")
+              "p-2 rounded-md text-slate-700 bg-transparent hover:text-slate-200 hover:bg-slate-700" +
+              (pathname === href ? " !bg-slate-700 !text-slate-200" : "")
             }
           >
             {label}

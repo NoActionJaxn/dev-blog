@@ -1,0 +1,17 @@
+---
+import Logo from "../Logo.astro";
+import PageNavigation from "./PageNavigation.astro";
+import SocialNetworks from "./SocialNetworks.astro";
+import { PAGES } from "../../constants/pages";
+import { SOCIAL_NETWORKS } from "../../constants/socialNetworks";
+---
+
+<div class="md:py-24 md:px-16 py-16 px-8">
+  <div class="flex flex-col gap-8 max-w-screen-2xl mx-auto md:items-start items-center">
+    <div class="flex w-full md:flex-row flex-col-reverse justify-between items-center gap-12">
+      <Logo />
+      <SocialNetworks networks={SOCIAL_NETWORKS} />
+    </div>
+    <PageNavigation pages={PAGES} />
+  </div>
+</div>

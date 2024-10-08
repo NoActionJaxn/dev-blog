@@ -1,5 +1,5 @@
 ---
-import type { Network } from "../types/network";
+import type { Network } from "../../types/network";
 
 interface Props {
   networks: Network[];
@@ -15,7 +15,7 @@ const { networks } = Astro.props;
         <li class="inline-block">
           <a
             href={href}
-            class="flex items-center justify-center box-border text-slate-800 bg-transparent hover:text-slate-200 hover:bg-slate-800 aspect-square lg:text-xl md:text-lg text-md p-2.5 rounded-full"
+            class="flex items-center justify-center box-border text-slate-700 bg-transparent hover:text-slate-200 hover:bg-slate-700 aspect-square lg:text-3xl md:text-2xl text-lg p-2.5 rounded-full"
           >
             <i class={icon}>
               <span class="sr-only">{label}</span>

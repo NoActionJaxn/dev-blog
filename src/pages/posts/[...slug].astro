@@ -45,9 +45,9 @@ const { title, tagline, tags, body, publishedAt } = Astro.props as Props;
     </div>
     <div class="flex flex-row gap-2 pt-2">
       {
-        tags?.map((_) => (
+        tags?.map(({ tag }) => (
           <div class="inline-flex border border-neutral-700 h-min px-2 py-1.5">
-            <span class="text-xs leading-none">tag</span>
+            <span class="text-xs leading-none">{tag}</span>
           </div>
         ))
       }

@@ -1,13 +1,14 @@
 ---
 import { format } from "date-fns";
-import type { JSONBody } from "../types/caisy";
 import Tag from "./Tag.astro";
+import type { Tag as TagType } from "../types/posts";
+import type { JSONBody } from "../types/caisy";
 
 interface Props {
   href?: string;
   title?: string;
   tagline?: string;
-  tags?: string[];
+  tags?: TagType[];
   body?: {
     json?: JSONBody;
   };
@@ -42,11 +43,7 @@ body?.json?.content?.forEach(({ content }) => {
       <p class="line-clamp-[10]">{preview}</p>
     </div>
     <div class="flex flex-row flex-wrap pt-8 gap-2.5">
-      {
-        tags?.map((tag) => (
-          <Tag>{tag}</Tag>
-        ))
-      }
+      {tags?.map(({ tag }) => <Tag>{tag}</Tag>)}
     </div>
   </div>
   <a

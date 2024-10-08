@@ -1,0 +1,19 @@
+---
+import classNames from "classnames";
+
+interface Props {
+  classlist?: string;
+}
+
+const { classlist } = Astro.props;
+---
+
+<div class="block box-border"></div>
+<p
+  class={classNames(
+    "text-lg leading-loose text-slate-700 border",
+    classlist,
+  )}
+>
+  <slot />
+</p>

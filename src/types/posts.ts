@@ -1,19 +1,35 @@
-import type { CaisyDocument_Meta, ConnectionEdge, JSONBody } from "./caisy"
+import type { CaisyMeta, ConnectionEdge, JSONBody } from "./caisy"
 
-export interface GetPost {
+export interface GetPosts {
   allPost: {
     edges?: ConnectionEdge<Post>[],
     type: string,
   }
 }
 
+export interface GetPostTags {
+  allPost: {
+    edges?: ConnectionEdge<PostTags>[],
+    type: string,
+  }
+}
 export interface Post {
-  _meta: CaisyDocument_Meta,
+  _meta: CaisyMeta,
   title: string,
   tagline?: string,
   body?: {
     json?: JSONBody,
   },
-  tags?: string[],
+  tags?: Tag[],
   slug: string,
+}
+
+export interface PostTags {
+  _meta: CaisyMeta,
+  tags?: Tag[],
+}
+
+export interface Tag {
+  id: string,
+  tag: string,
 }

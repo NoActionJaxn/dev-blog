@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets";
+import classNames from "classnames";
+
+interface Props {
+  src?: string;
+  alt?: string;
+  classlist?: string;
+}
+
+const { src = "", alt = "", classlist } = Astro.props;
+---
+
+<div class={classNames("rounded-full aspect-square overflow-hidden", classlist)}>
+  <Image src={src} alt={alt} class="object-fit" inferSize />
+</div>
